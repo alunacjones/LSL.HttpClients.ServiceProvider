@@ -58,7 +58,7 @@ namespace LSL.HttpClients.ServiceProvider
         }
 
         /// <summary>
-        /// Adds all matched clients from the assembly of the given generic type
+        /// Adds all matched clients from the assembly of the given generic type. Each type must require an HttpClient in its constructor.
         /// </summary>
         /// <param name="source">The IServiceCollection to add the clients to</param>
         /// <param name="typeFilter">The delegate that filters down to the types we need to register</param>
