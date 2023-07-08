@@ -78,6 +78,5 @@ namespace LSL.HttpClients.ServiceProvider
                 serviceTypeSelector,
                 implementationSelector);
         }
-
     }
 }
