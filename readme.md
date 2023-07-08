@@ -22,6 +22,8 @@ serviceCollection.AddHttpClientForClientsFromAssembly(
 Registering by type from an assembly of the type `IClient`:
 
 ```csharp
+using LSL.HttpClients.ServiceProvider;
+...
 serviceCollection.AddHttpClientForClientsFromAssemblyOf<IClient>(
     t => t.IsAssignableTo(typeof(IClient)),
     t => t);
