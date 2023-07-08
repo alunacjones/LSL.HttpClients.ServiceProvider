@@ -8,8 +8,21 @@ Allows for easy registration of multiple clients for a single `HttpClient`.
 
 ## Quickstart
 
-Registering by assembly:
+Registering by assembly for every type that implements `IClient`:
 
 ```csharp
+using LSL.HttpClients.ServiceProvider;
+...
+serviceCollection.AddHttpClientForClientsFromAssembly(
+    typeof(HttpClientServiceCollectionExtensionsTests).Assembly,
+    t => t.IsAssignableTo(typeof(IClient)),
+    t => t);
+```
 
+Registering by type from an assembly of the type `IClient`:
+
+```csharp
+serviceCollection.AddHttpClientForClientsFromAssemblyOf<IClient>(
+    t => t.IsAssignableTo(typeof(IClient)),
+    t => t);
 ```
