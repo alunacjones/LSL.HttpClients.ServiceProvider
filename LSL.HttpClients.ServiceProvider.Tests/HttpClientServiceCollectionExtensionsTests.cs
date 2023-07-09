@@ -195,7 +195,21 @@ namespace LSL.HttpClients.ServiceProvider.Tests
 
             matchedServices
                 .Should()
-                .HaveCount(5, "we have registered an HttpClient and a client by both its service type and implemtation type");            
+                .HaveCount(5, "we have registered an HttpClient and a client by both its service type and implemtation type");
+
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+
+            serviceProvider.GetRequiredService<Client>()
+                .HttpClient
+                .BaseAddress
+                .Should()
+                .Be(assembly1Uri1);
+
+            serviceProvider.GetRequiredService<AnotherClient>()
+                .HttpClient
+                .BaseAddress
+                .Should()
+                .Be(assembly1Uri2);
         }
 
         private interface IClient { HttpClient HttpClient { get; } }  
