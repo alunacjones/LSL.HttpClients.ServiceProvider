@@ -179,13 +179,13 @@ namespace LSL.HttpClients.ServiceProvider.Tests
             var assembly1Uri2 = new Uri("http://assembly2.com");
 
             serviceCollection.AddHttpClientForClientsFromAssemblyOf<IClient>(
-                t => t.IsAssignableTo(typeof(IClient)),
+                t => t.IsAssignableTo(typeof(IClient)) && !t.IsAbstract,
                 t => t,
                 t => t)
                 .ConfigureHttpClient(c => c.BaseAddress = assembly1Uri1);
 
             serviceCollection.AddHttpClientForClientsFromAssemblyOf<IAnotherClient>(
-                t => t.IsAssignableTo(typeof(IAnotherClient)),
+                t => t.IsAssignableTo(typeof(IAnotherClient)) && !t.IsAbstract,
                 t => t,
                 t => t)
                 .ConfigureHttpClient(c => c.BaseAddress = assembly1Uri2);
@@ -195,7 +195,7 @@ namespace LSL.HttpClients.ServiceProvider.Tests
 
             matchedServices
                 .Should()
-                .HaveCount(5, "we have registered an HttpClient and a client by both its service type and implemtation type");
+                .HaveCount(3, "we have registered an HttpClient and a client by both its service type and implemtation type");
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
 

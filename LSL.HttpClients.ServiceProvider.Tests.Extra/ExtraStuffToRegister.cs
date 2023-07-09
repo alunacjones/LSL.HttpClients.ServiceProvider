@@ -6,11 +6,11 @@ namespace LSL.HttpClients.ServiceProvider.Tests.Extra
 
     public class AnotherClient : IAnotherClient
     {
-            public AnotherClient(HttpClient httpClient)
-            {
-                HttpClient = httpClient;
-            }
+        public AnotherClient(HttpClient httpClient)
+        {
+            HttpClient = httpClient;
+        }
 
-            public HttpClient HttpClient { get; }
+        public HttpClient HttpClient { get; }
     }
 }
