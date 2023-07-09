@@ -19,6 +19,7 @@ namespace LSL.HttpClients.ServiceProvider
         /// <param name="serviceTypeSelector">The delegate that selects the service type from a Type</param>
         /// <param name="implementationSelector">[Optional] The delegate that selects the implementing type for a service from a Type (defaults to the type that was found by the typeFilter)</param>
         /// <returns>An IHttpClientBuilder to allow for continued configuration</returns>
+        /// <exception cref="System.ArgumentException">Thrown if no clients could be found<exception>
         public static IHttpClientBuilder AddHttpClientForClientsFromAssembly(
             this IServiceCollection source,
             Assembly apiAssembly,
@@ -66,6 +67,7 @@ namespace LSL.HttpClients.ServiceProvider
         /// <param name="implementationSelector">[Optional] The delegate that selects the implementing type for a service from a Type (defaults to the type that was found by the typeFilter)</param>
         /// <typeparam name="T">The type whose assembly will be scanned for eligible types</typeparam>
         /// <returns>An IHttpClientBuilder to allow for continued configuration</returns>
+        /// <exception cref="System.ArgumentException">Thrown if no clients could be found<exception>
         public static IHttpClientBuilder AddHttpClientForClientsFromAssemblyOf<T>(
             this IServiceCollection source,
             Func<Type, bool> typeFilter,
