@@ -5,6 +5,7 @@ using System.Net.Http;
 using NUnit.Framework;
 using FluentAssertions;
 using FluentAssertions.Execution;
+using LSL.HttpClients.ServiceProvider.Tests.Extra;
 
 namespace LSL.HttpClients.ServiceProvider.Tests
 {
@@ -90,7 +91,7 @@ namespace LSL.HttpClients.ServiceProvider.Tests
                 .Should()
                 .HaveCount(3, "we have registered an HttpClient and a client by both its service type and implemtation type");
         }
-
+        
         [Test]
         public void AddHttpClientForClientsFromAssemblyOf_GivenATypeSelectorThatFindsNothing_ThenNoClientsShouldBeRegistered()
         {
@@ -168,6 +169,35 @@ namespace LSL.HttpClients.ServiceProvider.Tests
                 .HaveCount(3, "we have registered an HttpClient and a client by both its service type and implemtation type");
         }
 
+        [Test]
+        public void AddHttpClientForClientsFromAssemblyOf_GivenMultipleAssembliesToScan_ThenItShouldRegisterTheExpectedHttpClientAndServices()
+        {
+            var serviceCollection = new ServiceCollection();
+            using var assertionScope = new AssertionScope();
+
+            var assembly1Uri1 = new Uri("http://assembly1.com");
+            var assembly1Uri2 = new Uri("http://assembly2.com");
+
+            serviceCollection.AddHttpClientForClientsFromAssemblyOf<IClient>(
+                t => t.IsAssignableTo(typeof(IClient)),
+                t => t,
+                t => t)
+                .ConfigureHttpClient(c => c.BaseAddress = assembly1Uri1);
+
+            serviceCollection.AddHttpClientForClientsFromAssemblyOf<IAnotherClient>(
+                t => t.IsAssignableTo(typeof(IAnotherClient)),
+                t => t,
+                t => t)
+                .ConfigureHttpClient(c => c.BaseAddress = assembly1Uri2);
+
+            var matchedServices = serviceCollection
+                .Where(sd => typeof(IAnotherClient).IsAssignableFrom(sd.ServiceType) || typeof(IClient).IsAssignableFrom(sd.ServiceType) || typeof(HttpClient).IsAssignableFrom(sd.ServiceType));
+
+            matchedServices
+                .Should()
+                .HaveCount(5, "we have registered an HttpClient and a client by both its service type and implemtation type");            
+        }
+
         private interface IClient { HttpClient HttpClient { get; } }  
 
         private class Client : IClient
@@ -178,6 +208,6 @@ namespace LSL.HttpClients.ServiceProvider.Tests
             }
 
             public HttpClient HttpClient { get; }
-        } 
+        }         
     }
 }

@@ -20,6 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LSL.HttpClients.ServiceProvider.Tests.Extra\LSL.HttpClients.ServiceProvider.Tests.Extra.csproj" />
+    <ProjectReference Include="..\LSL.HttpClients.ServiceProvider\LSL.HttpClients.ServiceProvider.csproj" />
   </ItemGroup>
 </Project>
